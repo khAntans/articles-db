@@ -1,0 +1,17 @@
+{% extends 'partials/base.twig' %}
+{% block body %}
+<form method="POST" action="/articles">
+    <div>
+        <label for="title">Title: </label>
+        <input id="title" type="text" name="title" required/>
+    </div>
+    <div>
+        <label for="description">Description: </label>
+        <br>
+        <textarea id="description" name="description" rows="5"></textarea>
+    </div>
+    <div>
+        <button type="submit">Create</button>
+    </div>
+</form>
+{% endblock %}

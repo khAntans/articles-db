@@ -1,0 +1,43 @@
+{% extends 'partials/base.twig' %}
+{% block body %}
+    <div class="justify-self-center text-center">
+        <h5>{{ session['actionStatus']  }}</h5>
+    </div>
+    <div class="flex flex-wrap gap-3 justify-center ">
+        {% for article in articles.all %}
+            <div class="w-64 border-2 border-cyan-500 rounded-2xl overflow-clip relative bg-opacity-10 bg-neutral-950
+            drop-shadow-md">
+                <div class="bg-indigo-300 mb-1 border-b-2 border-cyan-500 ">
+                    <img src="{{ article.getPicture }}" alt="{{ article.getTitle }}" class="object-cover h-48 w-96">
+                </div>
+                <h3 class="font-black capitalize px-1 hover:text-gray-800 hover:underline">
+                    <a href="/articles/{{ article.id }}">{{ article.getTitle }}</a>
+                </h3>
+                <p class="px-1 max-h-24 whitespace-normal overflow-hidden overflow-ellipsis max-w-full">{{ article.getDescription }}</p>
+                <p class="px-1"><small>{{ article.getCreatedAt }}</small></p>
+                {% if article.getUpdatedAt == true %}
+                    <p class="px-1"><small>Upd: {{ article.getUpdatedAt }}</small></p>
+                {% endif %}
+                <br>
+                <div class="h-11 mt-2"><h1> </h1></div>
+                <div class="grid grid-cols-2 pt-2 absolute bottom-0 right-0 ">
+                    <div  class="justify-self-center">
+                        <a href="/articles/{{ article.id }}/edit">
+                            <button class="text-white font-bold text-xl bg-indigo-500 hover:text-gray-300 hover:bg-cyan-600
+                                                             rounded-2xl drop-shadow-lg justify-self-end px-2 py-1.5
+                col-start-1 col-end-2 mt-5">Edit
+                            </button>
+                        </a>
+                    </div>
+                    <form method="POST" action="/articles/{{ article.id }}/delete" class="justify-self-center ">
+                        <input type="hidden" value="{{ article.id }}" name="id">
+                        <button class="text-white font-bold text-xl bg-red-600 hover:text-gray-300 hover:bg-red-900
+          rounded-2xl drop-shadow-lg mt-5 justify-self-end px-2 py-1.5
+col-start-2 col-end-3" type="submit">Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
