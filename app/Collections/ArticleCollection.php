@@ -7,7 +7,7 @@ use App\Models\Article;
 
 class ArticleCollection
 {
-    private array $articles;
+    private array $articles = [];
 
     public function __construct(array $articles = [])
     {
