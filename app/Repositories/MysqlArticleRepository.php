@@ -19,9 +19,9 @@ class MysqlArticleRepository implements ArticleRepository
         $dotenv->load();
 
         $connectionParams = [
-            'dbname' => 'articles',
-            'user' => $_ENV['DB_USER'],
-            'password' => $_ENV['DB_PASSWORD'],
+            'dbname' => $_ENV['MYSQL_DB_NAME'],
+            'user' => $_ENV['MYSQL_DB_USER'],
+            'password' => $_ENV['MYSQL_DB_PASSWORD'],
             'host' => 'localhost',
             'driver' => 'pdo_mysql',
         ];

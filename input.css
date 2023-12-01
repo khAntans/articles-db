@@ -1,3 +1,36 @@
+.article-show-width{
+    width: 900px;
+    max-width: 900px;
+}
+
+.margin-x-center{
+    margin: 0 auto;
+}
+
+input[type=text], textarea{
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    border: 1px solid #68a3cf;
+    color: #5a5cd1;
+    padding-left: 10px;
+}
+
+input[type=text]:focus,textarea:focus {
+    outline: none;
+    border: 2px solid #68a3cf;
+    color: #68a3cf;
+}
+
+input[type=text]{
+    width: 250px;
+    height: 30px;
+}
+textarea{
+    width: 700px;
+    min-height: 300px;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

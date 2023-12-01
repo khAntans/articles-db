@@ -16,7 +16,7 @@ class ShowArticleService
         $this->articleRepository = $articleRepository;
     }
 
-    public function execute(string $id): Article
+    public function execute(string $id): ?Article
     {
         return $this->articleRepository->getById($id);
 

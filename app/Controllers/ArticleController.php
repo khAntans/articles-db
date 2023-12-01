@@ -5,7 +5,6 @@ namespace App\Controllers;
 
 use App\Models\Article;
 use App\RedirectResponse;
-use App\Repositories\ArticleRepository;
 use App\Response;
 use App\Services\Article\DeleteArticleService;
 use App\Services\Article\EditArticleService;
@@ -18,25 +17,47 @@ use Respect\Validation\Validator as v;
 
 class ArticleController
 {
-    protected ArticleRepository $articleRepository;
+//    protected ArticleRepository $articleRepository;
+//
+//    public function __construct(ArticleRepository $articleRepository)
+//    {
+//        $this->articleRepository = $articleRepository;
+//    }
 
-    public function __construct(ArticleRepository $articleRepository)
+    protected IndexArticleService $indexArticleService;
+    protected ShowArticleService $showArticleService;
+    protected EditArticleService $editArticleService;
+    protected UpdateArticleService $updateArticleService;
+    protected StoreArticleService $storeArticleService;
+    protected DeleteArticleService $deleteArticleService;
+
+    public function __construct(
+        IndexArticleService  $indexArticleService,
+        ShowArticleService   $showArticleService,
+        EditArticleService   $editArticleService,
+        UpdateArticleService $updateArticleService,
+        StoreArticleService  $storeArticleService,
+        DeleteArticleService $deleteArticleService)
     {
-        $this->articleRepository = $articleRepository;
+        $this->indexArticleService = $indexArticleService;
+        $this->showArticleService = $showArticleService;
+        $this->editArticleService = $editArticleService;
+        $this->updateArticleService = $updateArticleService;
+        $this->storeArticleService = $storeArticleService;
+        $this->deleteArticleService = $deleteArticleService;
     }
+
 
     public function index(string $page = null): Response
     {
 
-        $service = new IndexArticleService($this->articleRepository);
-
-        $collection = $service->execute();
+        $collection = $this->indexArticleService->execute();
 
         return new ViewResponse('articles/index', ['articles' => $collection]);
 
     }
 
-    public function show(string $id): Response
+    public function show(string $id = null): Response
     {
         $id = (string)$id ?? $_POST['id'];
 
@@ -44,14 +65,21 @@ class ArticleController
             return new RedirectResponse('/articles');
         }
 
-        $service = new ShowArticleService($this->articleRepository);
-
-        $article = $service->execute($id);
+        $article = $this->showArticleService->execute($id);
 
         return new ViewResponse('articles/show', ['article' => $article]);
 
     }
 
+    private function checkIfIsSet(string $id, string $additionalMessage = null): ?Article
+    {
+        $article = $this->showArticleService->execute($id);
+        if (empty($article)) {
+            $_SESSION['actionStatus'] = "Post Nr. $id doesn't exist. " . $additionalMessage;
+            return null;
+        }
+        return $article;
+    }
 
     public function edit(string $id): Response
     {
@@ -60,9 +88,7 @@ class ArticleController
             return new RedirectResponse('/articles');
         }
 
-        $service = new EditArticleService($this->articleRepository);
-
-        $article = $service->execute($id);
+        $article = $this->editArticleService->execute($id);
 
         return new ViewResponse('articles/edit', ['article' => $article]);
     }
@@ -75,7 +101,7 @@ class ArticleController
     public function store(): Response
     {
 
-        $validTitle = v::notBlank()->stringVal()->validate($_POST['title']);
+        $validTitle = v::notBlank()->validate($_POST['title']);
         $validDescription = v::stringVal()->validate($_POST['description']);
 
         if (!$validTitle || !$validDescription) {
@@ -86,9 +112,8 @@ class ArticleController
         $title = $_POST['title'];
         $description = $_POST['description'];
 
-        $service = new StoreArticleService($this->articleRepository);
 
-        $service->execute($title, $description);
+        $this->storeArticleService->execute($title, $description);
 
 
         $_SESSION['actionStatus'] = 'Post stored successfully!';
@@ -117,9 +142,7 @@ class ArticleController
         $title = $_POST['title'];
         $description = $_POST['description'];
 
-        $service = new UpdateArticleService($this->articleRepository);
-
-        $service->execute($id, $title, $description);
+        $this->updateArticleService->execute($id, $title, $description);
 
         $_SESSION['actionStatus'] = 'Post stored successfully!';
         return new RedirectResponse('/articles/' . $id);
@@ -131,7 +154,7 @@ class ArticleController
 
         $id = (string)$id ?? $_POST['id'];
 
-        $foundArticle  = $this->checkIfIsSet($id, "Nothing changed!");
+        $foundArticle = $this->checkIfIsSet($id, "Nothing changed!");
 
         if (!$foundArticle) {
             return new RedirectResponse('/articles');
@@ -140,21 +163,9 @@ class ArticleController
 
         $_SESSION['actionStatus'] = "Post Nr. $id has been deleted";
 
-        $service = new DeleteArticleService($this->articleRepository);
-
-        $service->execute($foundArticle);
+        $this->deleteArticleService->execute($foundArticle);
 
         return new RedirectResponse('/articles');
-    }
-
-    private function checkIfIsSet(string $id, string $additionalMessage = null): ?Article
-    {
-        $article = $this->articleRepository->getById($id);
-        if (empty($article)) {
-            $_SESSION['actionStatus'] = "Post Nr. $id doesn't exist. " . $additionalMessage;
-            return null;
-        }
-        return $article;
     }
 
 }

@@ -20,19 +20,19 @@
                 {% endif %}
                 <br>
                 <div class="h-11 mt-2"><h1> </h1></div>
-                <div class="grid grid-cols-2 pt-2 absolute bottom-0 right-0 ">
+                <div class="grid grid-cols-2 pt-2 absolute bottom-0 right-1">
                     <div  class="justify-self-center">
                         <a href="/articles/{{ article.id }}/edit">
-                            <button class="text-white font-bold text-xl bg-indigo-500 hover:text-gray-300 hover:bg-cyan-600
-                                                             rounded-2xl drop-shadow-lg justify-self-end px-2 py-1.5
+                            <button class="text-white font-bold text-l bg-indigo-500 hover:text-gray-300 hover:bg-cyan-600
+                                                             rounded-xl drop-shadow-lg justify-self-end px-2 py-1.5
                 col-start-1 col-end-2 mt-5">Edit
                             </button>
                         </a>
                     </div>
                     <form method="POST" action="/articles/{{ article.id }}/delete" class="justify-self-center ">
                         <input type="hidden" value="{{ article.id }}" name="id">
-                        <button class="text-white font-bold text-xl bg-red-600 hover:text-gray-300 hover:bg-red-900
-          rounded-2xl drop-shadow-lg mt-5 justify-self-end px-2 py-1.5
+                        <button class="text-white font-bold text-l bg-red-600 hover:text-gray-300 hover:bg-red-900
+          rounded-xl drop-shadow-lg mt-5 justify-self-end px-2 py-1.5
 col-start-2 col-end-3" type="submit">Delete
                         </button>
                     </form>

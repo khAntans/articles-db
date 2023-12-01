@@ -26,7 +26,7 @@ class Article
     {
         $this->title = $title;
         $this->description = $description;
-        $this->picture = $picture ? $picture : "http://placekitten.com/500/500";
+        $this->picture = $picture ?? "http://placekitten.com/500/500";
         $this->createdAt = $createdAt == null ? Carbon::now() : new Carbon($createdAt);
         $this->id = $id;
         $this->updatedAt = $updatedAt ? Carbon::parse($updatedAt) : null;

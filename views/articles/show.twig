@@ -3,16 +3,16 @@
     <div class="justify-self-center text-center">
         <h5>{{ session['actionStatus'] }}</h5>
     </div>
-    <div class=" justify-center">
+    <div class="w-full">
         <div class=" border-2 border-cyan-500 rounded-2xl overflow-clip bg-opacity-10 bg-neutral-950
-            drop-shadow-md">
-            <div class="bg-indigo-300 mb-1 border-b-2 border-cyan-500 ">
-                <img src="{{ article.getPicture }}" alt="{{ article.getTitle }}" class="object-cover">
+            drop-shadow-md ">
+            <div class="bg-indigo-300 bg-opacity-70 mb-1 border-b-2 border-cyan-500 margin-x-center">
+                <img src="{{ article.getPicture }}" alt="{{ article.getTitle }}" class="object-cover margin-x-center">
             </div>
             <h3 class="font-black capitalize px-1 text-3xl">
                 <a>{{ article.getTitle }}</a>
             </h3>
-            <p class="px-1 break-words whitespace-normal max-w-full">{{ article.getDescription }}</p>
+            <p class="px-1 break-words whitespace-normal article-show-width">{{ article.getDescription }}</p>
             <p class="px-1"><small>Published: {{ article.getCreatedAt }}</small></p>
             {% if article.getUpdatedAt == true %}
                 <p class="px-1"><small>Last update: {{ article.getUpdatedAt }}</small></p>
